@@ -1,4 +1,4 @@
-import React, { useRef, useEffect, useState } from 'react';
+import React, { useRef, useEffect } from 'react';
 import {
   View,
   Text,
@@ -26,8 +26,14 @@ interface PitProps {
   danPitSize?: number;
   quanPitWidth?: number;
   quanPitHeight?: number;
-  /** Người chơi ngồi phía đối diện – đảo mũi tên VÀ xoay số đá */
+  /** Người chơi ngồi phía đối diện – đảo mũi tên */
   flipped?: boolean;
+  /** Xoay toàn bộ ô 180° để người đối diện đọc được (chỉ PvP) */
+  rotateForOpponent?: boolean;
+  /** Ô này đang được chọn (hiện mũi tên) */
+  isSelected?: boolean;
+  /** Callback khi chọn/bỏ chọn ô */
+  onSelect?: (pitId: number | null) => void;
 }
 
 export const Pit: React.FC<PitProps> = ({
@@ -36,16 +42,16 @@ export const Pit: React.FC<PitProps> = ({
   quanPitWidth = DEFAULT_QUAN_W,
   quanPitHeight = DEFAULT_QUAN_H,
   flipped = false,
+  rotateForOpponent = false,
+  isSelected = false,
+  onSelect,
 }) => {
-  const [showArrows, setShowArrows] = useState(false);
   const scaleAnim  = useRef(new Animated.Value(1)).current;
   const glowAnim   = useRef(new Animated.Value(0)).current;
   const bounceAnim = useRef(new Animated.Value(1)).current;
 
   const isQuan     = pit.type === 'QUAN';
   const isPlayable = !disabled && pit.stones > 0 && !isQuan;
-
-  useEffect(() => { if (disabled) setShowArrows(false); }, [disabled]);
 
   useEffect(() => {
     if (isAnimating) {
@@ -70,12 +76,13 @@ export const Pit: React.FC<PitProps> = ({
       Animated.spring(scaleAnim, { toValue: 0.9, useNativeDriver: true, speed: 50 }),
       Animated.spring(scaleAnim, { toValue: 1,   useNativeDriver: true, speed: 20 }),
     ]).start();
-    setShowArrows((prev) => !prev);
+    // Toggle selection: deselect if already selected, otherwise select this pit
+    onSelect?.(isSelected ? null : pit.id);
   };
 
   const handleDirection = (dir: Direction) => {
     Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
-    setShowArrows(false);
+    onSelect?.(null); // deselect after choosing direction
     onClick(dir);
   };
 
@@ -90,7 +97,7 @@ export const Pit: React.FC<PitProps> = ({
   const pitH   = isQuan ? quanPitHeight : danPitSize;
   const borderR = isQuan ? pitW / 2.5   : pitW / 2;
 
-  return (
+  const pitContent = (
     <View style={styles.wrapper}>
       <Animated.View style={{ transform: [{ scale: scaleAnim }, { scale: bounceAnim }], width: pitW, height: pitH }}>
         <TouchableOpacity
@@ -155,8 +162,8 @@ export const Pit: React.FC<PitProps> = ({
         </TouchableOpacity>
       </Animated.View>
 
-      {/* Mũi tên chọn hướng */}
-      {showArrows && !disabled && !isQuan && (
+      {/* Mũi tên chọn hướng — chỉ hiện khi ô này được chọn */}
+      {isSelected && !disabled && !isQuan && (
         <View style={styles.arrowsContainer}>
           <TouchableOpacity
             style={[styles.arrowBtn, flipped ? styles.arrowCW : styles.arrowCCW]}
@@ -176,6 +183,17 @@ export const Pit: React.FC<PitProps> = ({
       )}
     </View>
   );
+
+  // Nếu rotateForOpponent = true, xoay toàn bộ ô 180° để P2 nhìn đúng chiều
+  if (rotateForOpponent) {
+    return (
+      <View style={{ transform: [{ rotate: '180deg' }] }}>
+        {pitContent}
+      </View>
+    );
+  }
+
+  return pitContent;
 };
 
 const styles = StyleSheet.create({

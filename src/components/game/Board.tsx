@@ -1,6 +1,6 @@
 import React from 'react';
 import { View, StyleSheet, Text, useWindowDimensions } from 'react-native';
-import type { PitData, Direction } from '../../types';
+import type { PitData, Direction, GameMode } from '../../types';
 import { Pit } from './Pit';
 
 interface BoardProps {
@@ -9,6 +9,12 @@ interface BoardProps {
   currentPlayer: 'PLAYER_1' | 'PLAYER_2';
   isAnimating: boolean;
   animatingPit: number | null;
+  /** Chế độ chơi — dùng để quyết định có xoay ô P2 không */
+  gameMode?: GameMode | null;
+  /** ID ô đang được chọn (hiện mũi tên) — chỉ 1 ô cùng lúc */
+  selectedPitId?: number | null;
+  /** Callback khi người chơi chọn/bỏ chọn 1 ô */
+  onSelectPit?: (pitId: number | null) => void;
 }
 
 export const Board: React.FC<BoardProps> = ({
@@ -17,6 +23,9 @@ export const Board: React.FC<BoardProps> = ({
   currentPlayer,
   isAnimating,
   animatingPit,
+  gameMode = null,
+  selectedPitId = null,
+  onSelectPit,
 }) => {
   const { width } = useWindowDimensions();
   // Recalculate pit size responsively on orientation change
@@ -40,6 +49,9 @@ export const Board: React.FC<BoardProps> = ({
   const topRow = [board[11], board[10], board[9], board[8], board[7]];
   // Player 1 pits (bottom row) displayed left→right as 1,2,3,4,5
   const bottomRow = [board[1], board[2], board[3], board[4], board[5]];
+
+  // Chỉ xoay ô P2 cho chế độ PvP (2 người ngồi đối diện)
+  const isPvP = gameMode === 'PvP';
 
   const isPitDisabled = (pit: PitData): boolean => {
     if (isAnimating) return true;
@@ -73,7 +85,7 @@ export const Board: React.FC<BoardProps> = ({
 
           {/* 5 columns of dan pits */}
           <View style={styles.danColumns}>
-            {/* Top row: Player 2, indices 11→7 — flipped arrows for opposite player */}
+            {/* Top row: Player 2, indices 11→7 */}
             <View style={styles.row}>
               {topRow.map((pit) => (
                 <Pit
@@ -86,6 +98,9 @@ export const Board: React.FC<BoardProps> = ({
                   quanPitWidth={quanPitWidth}
                   quanPitHeight={quanPitHeight}
                   flipped={true}
+                  rotateForOpponent={isPvP}
+                  isSelected={selectedPitId === pit.id}
+                  onSelect={onSelectPit}
                 />
               ))}
             </View>
@@ -105,6 +120,8 @@ export const Board: React.FC<BoardProps> = ({
                   danPitSize={danPitSize}
                   quanPitWidth={quanPitWidth}
                   quanPitHeight={quanPitHeight}
+                  isSelected={selectedPitId === pit.id}
+                  onSelect={onSelectPit}
                 />
               ))}
             </View>

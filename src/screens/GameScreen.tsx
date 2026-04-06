@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import {
   View, Text, StyleSheet, SafeAreaView,
   Animated, TouchableOpacity, Alert, useWindowDimensions,
@@ -33,6 +33,14 @@ export const GameScreen: React.FC = () => {
   const msgAnim = useRef(new Animated.Value(0)).current;
   const prevMsg = useRef(gameState.message);
 
+  // ── Quản lý ô đang được chọn (chỉ 1 ô sáng cùng lúc) ──
+  const [selectedPitId, setSelectedPitId] = useState<number | null>(null);
+
+  // Reset selection khi đổi lượt hoặc bắt đầu animation
+  useEffect(() => {
+    setSelectedPitId(null);
+  }, [gameState.currentPlayer, gameState.isAnimating]);
+
   // Navigate to result when game ends
   useEffect(() => {
     if (gameState.winner) {
@@ -63,6 +71,7 @@ export const GameScreen: React.FC = () => {
   }, [gameState.message]);
 
   const handlePitClick = (pitId: number, direction: Direction) => {
+    setSelectedPitId(null); // Bỏ chọn sau khi rải
     if (gameState.isAnimating || gameState.winner) return;
     const pit = gameState.board[pitId];
     if (pit.owner !== gameState.currentPlayer) return;
@@ -108,6 +117,8 @@ export const GameScreen: React.FC = () => {
       ? (onlineState.opponentName ?? 'Đối thủ')
       : userState.player2Name;
 
+  const isPvP = gameState.gameMode === 'PvP';
+
   const msgScale = msgAnim.interpolate({ inputRange: [0, 1], outputRange: [0.85, 1] });
 
   // ── Landscape layout ─────────────────────────────────────────────────────────
@@ -134,8 +145,12 @@ export const GameScreen: React.FC = () => {
               </View>
             </View>
 
-            {/* ── P2 score ── */}
-            <View style={[s.lsScoreBar, !isP1Turn && s.lsScoreBarActive]}>
+            {/* ── P2 score — xoay 180° chỉ trong PvP ── */}
+            <View style={[
+              s.lsScoreBar,
+              !isP1Turn && s.lsScoreBarActive,
+              isPvP && { transform: [{ rotate: '180deg' }] },
+            ]}>
               <Text style={[s.lsScoreNum, { color: Colors.player2 }]}>{gameState.scores.PLAYER_2}</Text>
               <Text style={s.lsScoreLabel}>điểm</Text>
               <Text style={s.lsScoreName} numberOfLines={1}>{player2Name}</Text>
@@ -149,6 +164,9 @@ export const GameScreen: React.FC = () => {
                 currentPlayer={gameState.currentPlayer}
                 isAnimating={gameState.isAnimating}
                 animatingPit={gameState.animatingPit}
+                gameMode={gameState.gameMode}
+                selectedPitId={selectedPitId}
+                onSelectPit={setSelectedPitId}
               />
             </View>
 
@@ -201,6 +219,9 @@ export const GameScreen: React.FC = () => {
               currentPlayer={gameState.currentPlayer}
               isAnimating={gameState.isAnimating}
               animatingPit={gameState.animatingPit}
+              gameMode={gameState.gameMode}
+              selectedPitId={selectedPitId}
+              onSelectPit={setSelectedPitId}
             />
           </View>
 
@@ -258,4 +279,3 @@ const s = StyleSheet.create({
   turnText: { color: Colors.textPrimary, fontSize: Typography.md, fontWeight: Typography.bold },
   animHint: { color: Colors.textMuted, fontSize: Typography.xs, fontStyle: 'italic' },
 });
-
