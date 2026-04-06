@@ -163,24 +163,30 @@ export const Pit: React.FC<PitProps> = ({
       </Animated.View>
 
       {/* Mũi tên chọn hướng — chỉ hiện khi ô này được chọn */}
-      {isSelected && !disabled && !isQuan && (
-        <View style={styles.arrowsContainer}>
-          <TouchableOpacity
-            style={[styles.arrowBtn, flipped ? styles.arrowCW : styles.arrowCCW]}
-            onPress={() => handleDirection(flipped ? 'CW' : 'CCW')}
-            hitSlop={{ top: 12, bottom: 12, left: 8, right: 8 }}
-          >
-            <Text style={styles.arrowText}>◄</Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={[styles.arrowBtn, flipped ? styles.arrowCCW : styles.arrowCW]}
-            onPress={() => handleDirection(flipped ? 'CCW' : 'CW')}
-            hitSlop={{ top: 12, bottom: 12, left: 8, right: 8 }}
-          >
-            <Text style={styles.arrowText}>►</Text>
-          </TouchableOpacity>
-        </View>
-      )}
+      {/* Khi rotateForOpponent = true (PvP), toàn bộ ô đã xoay 180° nên
+          ◄ tự trở thành ► theo góc nhìn P2 → giữ nguyên CW/CCW gốc.
+          Chỉ đảo hướng khi flipped && !rotateForOpponent (PvE view). */}
+      {isSelected && !disabled && !isQuan && (() => {
+        const flipDir = flipped && !rotateForOpponent;
+        return (
+          <View style={styles.arrowsContainer}>
+            <TouchableOpacity
+              style={[styles.arrowBtn, flipDir ? styles.arrowCW : styles.arrowCCW]}
+              onPress={() => handleDirection(flipDir ? 'CW' : 'CCW')}
+              hitSlop={{ top: 12, bottom: 12, left: 8, right: 8 }}
+            >
+              <Text style={styles.arrowText}>◄</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={[styles.arrowBtn, flipDir ? styles.arrowCCW : styles.arrowCW]}
+              onPress={() => handleDirection(flipDir ? 'CCW' : 'CW')}
+              hitSlop={{ top: 12, bottom: 12, left: 8, right: 8 }}
+            >
+              <Text style={styles.arrowText}>►</Text>
+            </TouchableOpacity>
+          </View>
+        );
+      })()}
     </View>
   );
 
