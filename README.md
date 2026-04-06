@@ -11,6 +11,13 @@ Game dân gian Việt Nam dành cho điện thoại. Chơi **offline** (PvP / Pv
 
 ```bash
 cd DesignGame
+```
+- Cấp quyền cho máy mới 
+```bash
+Set-ExecutionPolicy RemoteSigned -Scope CurrentUser
+```
+-Cài đặt thư viện 
+```bash
 npm install
 ```
 ### 2. Cài công cụ tunnel (với máy mới)
