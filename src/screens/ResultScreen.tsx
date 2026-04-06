@@ -22,8 +22,11 @@ export const ResultScreen: React.FC = () => {
   const gameState = useSelector((s: RootState) => s.game);
   const userState = useSelector((s: RootState) => s.user);
 
-  const getName = (p: 'PLAYER_1' | 'PLAYER_2') =>
-    p === 'PLAYER_1' ? userState.player1Name : userState.player2Name;
+  const getName = (p: 'PLAYER_1' | 'PLAYER_2') => {
+    if (p === 'PLAYER_1') return userState.player1Name;
+    if (gameState.gameMode === 'PvE') return `AI (${gameState.difficulty})`;
+    return userState.player2Name;
+  };
 
   const winnerLabel =
     gameState.winner === 'DRAW'
