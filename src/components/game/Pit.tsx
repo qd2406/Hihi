@@ -131,7 +131,7 @@ export const Pit: React.FC<PitProps> = ({
             </View>
           )}
 
-          {/* Badge số đá — xoay 180° nếu flipped (Player 2) */}
+          {/* Badge số đá */}
           <View
             style={[styles.badge, flipped && styles.badgeFlipped]}
             pointerEvents="none"
@@ -140,7 +140,6 @@ export const Pit: React.FC<PitProps> = ({
               style={[
                 styles.badgeText,
                 isQuan && styles.quanBadgeText,
-                flipped && { transform: [{ rotate: '180deg' }] },
               ]}
             >
               {pit.stones}
@@ -149,7 +148,7 @@ export const Pit: React.FC<PitProps> = ({
 
           {/* Nhãn QUAN */}
           {isQuan && (
-            <Text style={[styles.quanLabel, flipped && { transform: [{ rotate: '180deg' }], top: undefined, bottom: 6 }]}>
+            <Text style={[styles.quanLabel, flipped && { top: undefined, bottom: 6 }]}>
               Quan
             </Text>
           )}

@@ -134,8 +134,8 @@ export const GameScreen: React.FC = () => {
               </View>
             </View>
 
-            {/* ── P2 score — xoay 180° để người ngồi đối diện đọc được ── */}
-            <View style={[s.lsScoreBar, !isP1Turn && s.lsScoreBarActive, { transform: [{ rotate: '180deg' }] }]}>
+            {/* ── P2 score ── */}
+            <View style={[s.lsScoreBar, !isP1Turn && s.lsScoreBarActive]}>
               <Text style={[s.lsScoreNum, { color: Colors.player2 }]}>{gameState.scores.PLAYER_2}</Text>
               <Text style={s.lsScoreLabel}>điểm</Text>
               <Text style={s.lsScoreName} numberOfLines={1}>{player2Name}</Text>
