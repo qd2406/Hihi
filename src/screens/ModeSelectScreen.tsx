@@ -3,7 +3,7 @@ import {
   View, Text, TouchableOpacity, StyleSheet,
   SafeAreaView, ScrollView, Alert, BackHandler, Platform,
 } from 'react-native';
-import { LinearGradient } from 'expo-linear-gradient';
+import { BlurredBackground } from '../components/BlurredBackground';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigation } from '@react-navigation/native';
 import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
@@ -44,7 +44,7 @@ export const ModeSelectScreen: React.FC = () => {
   };
 
   return (
-    <LinearGradient colors={[Colors.gradientStart, Colors.gradientMid, Colors.gradientEnd]} style={s.gradient}>
+    <BlurredBackground>
       <SafeAreaView style={s.safe}>
         <ScrollView contentContainerStyle={s.scroll}>
           {/* Header */}
@@ -130,7 +130,7 @@ export const ModeSelectScreen: React.FC = () => {
           </TouchableOpacity>
         </ScrollView>
       </SafeAreaView>
-    </LinearGradient>
+    </BlurredBackground>
   );
 };
 

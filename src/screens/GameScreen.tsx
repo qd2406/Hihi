@@ -3,7 +3,7 @@ import {
   View, Text, StyleSheet, SafeAreaView,
   Animated, TouchableOpacity, Alert, useWindowDimensions,
 } from 'react-native';
-import { LinearGradient } from 'expo-linear-gradient';
+import { BlurredBackground } from '../components/BlurredBackground';
 import { useSelector, useDispatch } from 'react-redux';
 import { useNavigation } from '@react-navigation/native';
 import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
@@ -125,7 +125,7 @@ export const GameScreen: React.FC = () => {
   if (isLandscape) {
     const isP1Turn = gameState.currentPlayer === 'PLAYER_1';
     return (
-      <LinearGradient colors={[Colors.gradientStart, Colors.gradientMid, Colors.gradientEnd]} style={s.gradient}>
+      <BlurredBackground>
         <SafeAreaView style={s.safe}>
           <View style={s.landscapeRoot}>
 
@@ -179,13 +179,13 @@ export const GameScreen: React.FC = () => {
 
           </View>
         </SafeAreaView>
-      </LinearGradient>
+      </BlurredBackground>
     );
   }
 
   // ── Portrait layout ───────────────────────────────────────────────────────────
   return (
-    <LinearGradient colors={[Colors.gradientStart, Colors.gradientMid, Colors.gradientEnd]} style={s.gradient}>
+    <BlurredBackground>
       <SafeAreaView style={s.safe}>
         <View style={s.portraitRoot}>
           {/* Header */}
@@ -237,7 +237,7 @@ export const GameScreen: React.FC = () => {
           </View>
         </View>
       </SafeAreaView>
-    </LinearGradient>
+    </BlurredBackground>
   );
 };
 

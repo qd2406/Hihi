@@ -3,7 +3,7 @@ import {
   View, Text, TouchableOpacity, StyleSheet,
   SafeAreaView, ScrollView, Switch,
 } from 'react-native';
-import { LinearGradient } from 'expo-linear-gradient';
+import { BlurredBackground } from '../components/BlurredBackground';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigation } from '@react-navigation/native';
 import type { RootState } from '../store/store';
@@ -23,7 +23,7 @@ export const SettingsScreen: React.FC = () => {
   const SPEED_LABELS = { slow: 'Chậm', normal: 'Bình thường', fast: 'Nhanh' };
 
   return (
-    <LinearGradient colors={[Colors.gradientStart, Colors.gradientMid, Colors.gradientEnd]} style={s.gradient}>
+    <BlurredBackground>
       <SafeAreaView style={s.safe}>
         <ScrollView contentContainerStyle={s.scroll}>
           {/* Header */}
@@ -101,7 +101,7 @@ export const SettingsScreen: React.FC = () => {
           </TouchableOpacity>
         </ScrollView>
       </SafeAreaView>
-    </LinearGradient>
+    </BlurredBackground>
   );
 };
 

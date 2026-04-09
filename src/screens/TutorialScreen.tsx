@@ -3,7 +3,7 @@ import {
   View, Text, TouchableOpacity, StyleSheet,
   SafeAreaView, ScrollView,
 } from 'react-native';
-import { LinearGradient } from 'expo-linear-gradient';
+import { BlurredBackground } from '../components/BlurredBackground';
 import { useNavigation } from '@react-navigation/native';
 import { Colors } from '../theme/colors';
 import { Typography } from '../theme/typography';
@@ -46,7 +46,7 @@ export const TutorialScreen: React.FC = () => {
   const navigation = useNavigation();
 
   return (
-    <LinearGradient colors={[Colors.gradientStart, Colors.gradientMid, Colors.gradientEnd]} style={s.gradient}>
+    <BlurredBackground>
       <SafeAreaView style={s.safe}>
         <ScrollView contentContainerStyle={s.scroll}>
           {/* Header */}
@@ -80,7 +80,7 @@ export const TutorialScreen: React.FC = () => {
           </TouchableOpacity>
         </ScrollView>
       </SafeAreaView>
-    </LinearGradient>
+    </BlurredBackground>
   );
 };
 

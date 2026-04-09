@@ -3,7 +3,7 @@ import {
   View, Text, TouchableOpacity, StyleSheet,
   SafeAreaView, FlatList, TextInput, Alert, ActivityIndicator,
 } from 'react-native';
-import { LinearGradient } from 'expo-linear-gradient';
+import { BlurredBackground } from '../components/BlurredBackground';
 import { useSelector } from 'react-redux';
 import { useNavigation } from '@react-navigation/native';
 import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
@@ -71,7 +71,7 @@ export const LobbyScreen: React.FC = () => {
   );
 
   return (
-    <LinearGradient colors={[Colors.gradientStart, Colors.gradientMid, Colors.gradientEnd]} style={s.gradient}>
+    <BlurredBackground>
       <SafeAreaView style={s.safe}>
         {/* Header */}
         <View style={s.header}>
@@ -164,7 +164,7 @@ export const LobbyScreen: React.FC = () => {
           </>
         )}
       </SafeAreaView>
-    </LinearGradient>
+    </BlurredBackground>
   );
 };
 
