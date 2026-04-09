@@ -40,56 +40,56 @@ export const LoginScreen: React.FC = () => {
       <ImageBackground
         source={BG_IMAGE}
         style={s.bg}
-        resizeMode="cover"
+        resizeMode="stretch"
       >
-        {/* ── Nút Thoát – góc trên trái ── */}
-        <TouchableOpacity
-          style={s.exitBtn}
-          activeOpacity={0.75}
-          onPress={() =>
-            Alert.alert('Thoát game', 'Bạn muốn thoát khỏi ứng dụng?', [
-              { text: 'Ở lại', style: 'cancel' },
-              {
-                text: 'Thoát',
-                style: 'destructive',
-                onPress: () => {
-                  if (Platform.OS === 'android') BackHandler.exitApp();
-                },
-              },
-            ])
-          }
-        >
-          <Text style={s.topBtnText}>✕  Thoát</Text>
-        </TouchableOpacity>
-
-        {/* ── Nút Cài đặt – góc trên phải ── */}
-        <TouchableOpacity
-          style={s.settingsBtn}
-          activeOpacity={0.75}
-          onPress={() => navigation.navigate('Settings')}
-        >
-          <Text style={s.topBtnText}>⚙️</Text>
-        </TouchableOpacity>
-
-        {/* ── Buttons khu vực giữa-trái ── */}
+        {/* ── Menu chính – giữa trái ── */}
         <Animated.View
           style={[
-            s.buttonsArea,
+            s.menuArea,
             { opacity: fadeAnim, transform: [{ translateY: slideAnim }] },
           ]}
         >
-          {/* Bắt đầu – phong chữ thư pháp */}
-          <TouchableOpacity style={s.startBtn} onPress={handleStart} activeOpacity={0.85}>
-            <Text style={s.startBtnText}>Bắt đầu  →</Text>
+          {/* Bắt đầu */}
+          <TouchableOpacity style={s.menuItem} onPress={handleStart} activeOpacity={0.7}>
+            <Text style={s.menuText}>Bắt đầu</Text>
           </TouchableOpacity>
 
           {/* Hướng dẫn */}
           <TouchableOpacity
-            style={s.guideBtn}
+            style={s.menuItem}
             onPress={() => navigation.navigate('Tutorial')}
-            activeOpacity={0.75}
+            activeOpacity={0.7}
           >
-            <Text style={s.guideBtnText}>Hướng dẫn</Text>
+            <Text style={s.menuText}>Hướng dẫn</Text>
+          </TouchableOpacity>
+
+          {/* Cài đặt */}
+          <TouchableOpacity
+            style={s.menuItem}
+            onPress={() => navigation.navigate('Settings')}
+            activeOpacity={0.7}
+          >
+            <Text style={s.menuText}>Cài đặt</Text>
+          </TouchableOpacity>
+
+          {/* Thoát */}
+          <TouchableOpacity
+            style={s.menuItem}
+            activeOpacity={0.7}
+            onPress={() =>
+              Alert.alert('Thoát game', 'Bạn muốn thoát khỏi ứng dụng?', [
+                { text: 'Ở lại', style: 'cancel' },
+                {
+                  text: 'Thoát',
+                  style: 'destructive',
+                  onPress: () => {
+                    if (Platform.OS === 'android') BackHandler.exitApp();
+                  },
+                },
+              ])
+            }
+          >
+            <Text style={s.menuText}>Thoát</Text>
           </TouchableOpacity>
         </Animated.View>
 
@@ -109,77 +109,26 @@ const s = StyleSheet.create({
     height: '100%',
   },
 
-  /* ── Top buttons chung ────────────── */
-  topBtnText: {
-    color: '#fff',
-    fontSize: 17,
-    fontWeight: '700',
-    textShadowColor: 'rgba(0,0,0,0.9)',
-    textShadowOffset: { width: 1, height: 1 },
-    textShadowRadius: 5,
-  },
-
-  /* ── Thoát – góc trên trái ───────── */
-  exitBtn: {
-    position: 'absolute',
-    top: 14,
-    left: 14,
-    zIndex: 10,
-    paddingVertical: 6,
-    paddingHorizontal: 10,
-  },
-
-  /* ── Cài đặt – góc trên phải ─────── */
-  settingsBtn: {
-    position: 'absolute',
-    top: 14,
-    right: 14,
-    zIndex: 10,
-    paddingVertical: 6,
-    paddingHorizontal: 10,
-  },
-
-  /* ── Khu vực nút giữa-trái ─────────── */
-  buttonsArea: {
+  /* ── Menu dọc giữa-trái ─────────── */
+  menuArea: {
     position: 'absolute',
     left: 28,
-    top: '35%',
-    gap: 10,
+    top: '32%',
+    gap: 6,
   },
 
-  /* Nút Bắt đầu – oval trắng, phông thư pháp */
-  startBtn: {
-    backgroundColor: 'rgba(255,255,255,0.92)',
-    borderRadius: 999,
-    paddingVertical: 12,
-    paddingHorizontal: 34,
-    borderWidth: 1.5,
-    borderColor: 'rgba(0,0,0,0.15)',
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 3 },
-    shadowOpacity: 0.3,
-    shadowRadius: 6,
-    elevation: 6,
-  },
-  startBtnText: {
-    color: '#1a1a1a',
-    fontSize: 22,
-    fontFamily: 'DancingScript_700Bold',
-    letterSpacing: 0.5,
+  menuItem: {
+    paddingVertical: 5,
+    paddingHorizontal: 6,
   },
 
-  /* Nút Hướng dẫn – text italic */
-  guideBtn: {
-    paddingVertical: 6,
-    paddingHorizontal: 8,
-  },
-  guideBtnText: {
+  menuText: {
     color: '#fff',
-    fontSize: 18,
-    fontWeight: '600',
-    fontStyle: 'italic',
-    textShadowColor: 'rgba(0,0,0,0.85)',
-    textShadowOffset: { width: 1, height: 1 },
-    textShadowRadius: 5,
+    fontSize: 30,
+    fontFamily: 'DancingScript_700Bold',
+    textShadowColor: 'rgba(0,0,0,0.9)',
+    textShadowOffset: { width: 1, height: 2 },
+    textShadowRadius: 6,
   },
 });
+
