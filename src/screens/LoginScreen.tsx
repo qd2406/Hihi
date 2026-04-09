@@ -1,9 +1,8 @@
 import React, { useEffect } from 'react';
 import {
   View, Text, TouchableOpacity,
-  StyleSheet, SafeAreaView,
-  Platform, Animated, Alert, BackHandler,
-  ImageBackground,
+  StyleSheet, Platform, Animated, Alert, BackHandler,
+  ImageBackground, Dimensions,
 } from 'react-native';
 import { useDispatch } from 'react-redux';
 import { useNavigation } from '@react-navigation/native';
@@ -12,6 +11,7 @@ import { setPlayer1Name, setPlayer2Name } from '../store/userSlice';
 import type { RootStackParamList } from '../types';
 
 const BG_IMAGE = require('../../assets/bg_home.png');
+const { width: SCREEN_W, height: SCREEN_H } = Dimensions.get('window');
 
 type Nav = NativeStackNavigationProp<RootStackParamList, 'Login'>;
 
@@ -36,9 +36,12 @@ export const LoginScreen: React.FC = () => {
   };
 
   return (
-    <ImageBackground source={BG_IMAGE} style={s.bg} resizeMode="cover">
-      <SafeAreaView style={s.safe}>
-
+    <View style={s.root}>
+      <ImageBackground
+        source={BG_IMAGE}
+        style={s.bg}
+        resizeMode="cover"
+      >
         {/* ── Nút Thoát – góc trên trái ── */}
         <TouchableOpacity
           style={s.exitBtn}
@@ -56,7 +59,16 @@ export const LoginScreen: React.FC = () => {
             ])
           }
         >
-          <Text style={s.exitText}>✕ Thoát</Text>
+          <Text style={s.topBtnText}>✕  Thoát</Text>
+        </TouchableOpacity>
+
+        {/* ── Nút Cài đặt – góc trên phải ── */}
+        <TouchableOpacity
+          style={s.settingsBtn}
+          activeOpacity={0.75}
+          onPress={() => navigation.navigate('Settings')}
+        >
+          <Text style={s.topBtnText}>⚙️</Text>
         </TouchableOpacity>
 
         {/* ── Buttons khu vực giữa-trái ── */}
@@ -66,7 +78,7 @@ export const LoginScreen: React.FC = () => {
             { opacity: fadeAnim, transform: [{ translateY: slideAnim }] },
           ]}
         >
-          {/* Bắt đầu */}
+          {/* Bắt đầu – phong chữ thư pháp */}
           <TouchableOpacity style={s.startBtn} onPress={handleStart} activeOpacity={0.85}>
             <Text style={s.startBtnText}>Bắt đầu  →</Text>
           </TouchableOpacity>
@@ -81,55 +93,68 @@ export const LoginScreen: React.FC = () => {
           </TouchableOpacity>
         </Animated.View>
 
-      </SafeAreaView>
-    </ImageBackground>
+      </ImageBackground>
+    </View>
   );
 };
 
 const s = StyleSheet.create({
+  root: {
+    flex: 1,
+    backgroundColor: '#000',
+  },
   bg: {
     flex: 1,
-  },
-  safe: {
-    flex: 1,
+    width: '100%',
+    height: '100%',
   },
 
-  /* ── Thoát ─────────────────────────── */
+  /* ── Top buttons chung ────────────── */
+  topBtnText: {
+    color: '#fff',
+    fontSize: 17,
+    fontWeight: '700',
+    textShadowColor: 'rgba(0,0,0,0.9)',
+    textShadowOffset: { width: 1, height: 1 },
+    textShadowRadius: 5,
+  },
+
+  /* ── Thoát – góc trên trái ───────── */
   exitBtn: {
     position: 'absolute',
-    top: 38,
-    left: 16,
+    top: 14,
+    left: 14,
     zIndex: 10,
     paddingVertical: 6,
-    paddingHorizontal: 12,
+    paddingHorizontal: 10,
   },
-  exitText: {
-    color: '#fff',
-    fontSize: 16,
-    fontWeight: '700',
-    textShadowColor: 'rgba(0,0,0,0.85)',
-    textShadowOffset: { width: 1, height: 1 },
-    textShadowRadius: 4,
+
+  /* ── Cài đặt – góc trên phải ─────── */
+  settingsBtn: {
+    position: 'absolute',
+    top: 14,
+    right: 14,
+    zIndex: 10,
+    paddingVertical: 6,
+    paddingHorizontal: 10,
   },
 
   /* ── Khu vực nút giữa-trái ─────────── */
   buttonsArea: {
     position: 'absolute',
     left: 28,
-    top: '38%',
+    top: '35%',
     gap: 10,
   },
 
-  /* Nút Bắt đầu – oval trắng */
+  /* Nút Bắt đầu – oval trắng, phông thư pháp */
   startBtn: {
     backgroundColor: 'rgba(255,255,255,0.92)',
     borderRadius: 999,
     paddingVertical: 12,
-    paddingHorizontal: 32,
+    paddingHorizontal: 34,
     borderWidth: 1.5,
     borderColor: 'rgba(0,0,0,0.15)',
-
-    // Shadow
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 3 },
     shadowOpacity: 0.3,
@@ -138,8 +163,8 @@ const s = StyleSheet.create({
   },
   startBtnText: {
     color: '#1a1a1a',
-    fontSize: 18,
-    fontWeight: '800',
+    fontSize: 22,
+    fontFamily: 'DancingScript_700Bold',
     letterSpacing: 0.5,
   },
 
