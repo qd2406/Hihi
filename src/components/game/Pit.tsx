@@ -133,7 +133,7 @@ export const Pit: React.FC<PitProps> = ({
             /* DAN: đá nhỏ rải ngẫu nhiên */
             <View style={StyleSheet.absoluteFillObject} pointerEvents="none">
               {stonesArr.map((_, i) => (
-                <Stone key={i} index={i} isAnimating={isAnimating} />
+                <Stone key={i} index={i} isAnimating={isAnimating} totalStones={pit.stones} />
               ))}
             </View>
           )}
@@ -162,10 +162,7 @@ export const Pit: React.FC<PitProps> = ({
         </TouchableOpacity>
       </Animated.View>
 
-      {/* Mũi tên chọn hướng — chỉ hiện khi ô này được chọn */}
-      {/* Khi rotateForOpponent = true (PvP), toàn bộ ô đã xoay 180° nên
-          ◄ tự trở thành ► theo góc nhìn P2 → giữ nguyên CW/CCW gốc.
-          Chỉ đảo hướng khi flipped && !rotateForOpponent (PvE view). */}
+
       {isSelected && !disabled && !isQuan && (() => {
         const flipDir = flipped && !rotateForOpponent;
         return (

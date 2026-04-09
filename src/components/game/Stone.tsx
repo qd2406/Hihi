@@ -1,31 +1,37 @@
-import React, { useRef, useEffect } from 'react';
-import { View, StyleSheet, Animated } from 'react-native';
+import React, { useRef, useEffect, useMemo } from 'react';
+import { StyleSheet, Animated } from 'react-native';
 
-// Predefined stone colors for variety
+const STONE_COLOR = '#e8d5a3'; // Màu mặc định
+
 const STONE_COLORS = [
-  '#e8d5a3', // warm sand
-  '#c4956a', // terracotta
-  '#8b9d77', // sage green
-  '#b0c4de', // light steel blue
-  '#deb887', // burlywood
-  '#cd853f', // peru
-  '#a0785a', // brown
+  '#e8d5a3',
+  '#c4956a',
+  '#8b9d77',
+  '#b0c4de',
+  '#deb887',
+  '#cd853f',
+  '#a0785a',
 ];
 
 interface StoneProps {
   index: number;
   isAnimating?: boolean;
+  totalStones?: number;
 }
 
-export const Stone: React.FC<StoneProps> = ({ index, isAnimating = false }) => {
+export const Stone: React.FC<StoneProps> = ({ index, isAnimating = false, totalStones = 0 }) => {
   const scaleAnim = useRef(new Animated.Value(isAnimating ? 0 : 1)).current;
-  const colorIndex = index % STONE_COLORS.length;
-  const color = STONE_COLORS[colorIndex];
 
-  // Random but deterministic offset based on index
-  const seed = index * 137.508; // golden angle
-  const offsetX = (Math.sin(seed) * 0.35) * 100; // percentage
-  const offsetY = (Math.cos(seed) * 0.35) * 100;
+  // Vị trí random thực sự, chỉ tính 1 lần khi mount
+  const { offsetX, offsetY } = useMemo(() => {
+    // Random trong khoảng [-35%, +35%] so với tâm
+    const angle = Math.random() * Math.PI * 2;
+    const radius = Math.random() * 0.35;
+    return {
+      offsetX: Math.cos(angle) * radius * 100,
+      offsetY: Math.sin(angle) * radius * 100,
+    };
+  }, []);
 
   useEffect(() => {
     if (isAnimating) {
@@ -43,9 +49,10 @@ export const Stone: React.FC<StoneProps> = ({ index, isAnimating = false }) => {
       style={[
         styles.stone,
         {
-          backgroundColor: color,
+          backgroundColor: totalStones > 8
+            ? STONE_COLORS[index % STONE_COLORS.length]
+            : STONE_COLOR,
           transform: [{ scale: scaleAnim }],
-          // Distribute stones within pit using percentage positions
           position: 'absolute',
           left: `${50 + offsetX}%` as any,
           top: `${50 + offsetY}%` as any,

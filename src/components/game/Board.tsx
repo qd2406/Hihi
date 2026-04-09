@@ -9,11 +9,8 @@ interface BoardProps {
   currentPlayer: 'PLAYER_1' | 'PLAYER_2';
   isAnimating: boolean;
   animatingPit: number | null;
-  /** Chế độ chơi — dùng để quyết định có xoay ô P2 không */
   gameMode?: GameMode | null;
-  /** ID ô đang được chọn (hiện mũi tên) — chỉ 1 ô cùng lúc */
   selectedPitId?: number | null;
-  /** Callback khi người chơi chọn/bỏ chọn 1 ô */
   onSelectPit?: (pitId: number | null) => void;
 }
 
@@ -28,29 +25,19 @@ export const Board: React.FC<BoardProps> = ({
   onSelectPit,
 }) => {
   const { width } = useWindowDimensions();
-  // Recalculate pit size responsively on orientation change
   const BOARD_PADDING = 24;
   const PIT_GAP = 4;
   const danPitSize = Math.min(Math.floor((width - BOARD_PADDING * 2 - PIT_GAP * 6) / 7), 72);
   const quanPitWidth = danPitSize;
   const quanPitHeight = danPitSize * 2 + PIT_GAP;
-  // Board layout:
-  // ┌─────────────────────────────────────┐
-  // │  [Q1]  [11][10][9][8][7]  [Q2]     │  ← Player 2 row (top, reversed)
-  // │                                     │
-  // │  [Q1]  [1][2][3][4][5]   [Q2]      │  ← Player 1 row (bottom)
-  // └─────────────────────────────────────┘
-  // Q1 = pit 0 (left, spans both rows), Q2 = pit 6 (right, spans both rows)
+
 
   const quan1 = board[0];
   const quan2 = board[6];
 
-  // Player 2 pits (top row) displayed from left→right as 11,10,9,8,7 for CW feel
   const topRow = [board[11], board[10], board[9], board[8], board[7]];
-  // Player 1 pits (bottom row) displayed left→right as 1,2,3,4,5
   const bottomRow = [board[1], board[2], board[3], board[4], board[5]];
 
-  // Chỉ xoay ô P2 cho chế độ PvP (2 người ngồi đối diện)
   const isPvP = gameMode === 'PvP';
 
   const isPitDisabled = (pit: PitData): boolean => {
