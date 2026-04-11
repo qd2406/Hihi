@@ -8,8 +8,9 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useNavigation } from '@react-navigation/native';
 import type { RootState } from '../store/store';
 import {
-  toggleSound, toggleVibration, setAnimationSpeed, toggleHints, resetSettings,
+  toggleSound, setAnimationSpeed, toggleHints, resetSettings,
 } from '../store/settingsSlice';
+import { MusicService } from '../services/MusicService';
 import { Colors } from '../theme/colors';
 import { Typography } from '../theme/typography';
 import { Spacing, Radius } from '../theme/spacing';
@@ -21,6 +22,12 @@ export const SettingsScreen: React.FC = () => {
 
   const SPEEDS = ['slow', 'normal', 'fast'] as const;
   const SPEED_LABELS = { slow: 'Chậm', normal: 'Bình thường', fast: 'Nhanh' };
+
+  const handleToggleSound = () => {
+    const newValue = !settings.soundEnabled;
+    dispatch(toggleSound());
+    MusicService.setEnabled(newValue);
+  };
 
   return (
     <BlurredBackground>
@@ -37,24 +44,14 @@ export const SettingsScreen: React.FC = () => {
 
           {/* Sound */}
           <View style={s.card}>
-            <Text style={s.cardTitle}>Âm thanh & Rung</Text>
+            <Text style={s.cardTitle}>Âm thanh</Text>
             <View style={s.row}>
               <Text style={s.rowLabel}>🔊 Âm thanh</Text>
               <Switch
                 value={settings.soundEnabled}
-                onValueChange={() => { dispatch(toggleSound()); }}
+                onValueChange={handleToggleSound}
                 trackColor={{ false: Colors.bgCard, true: Colors.primary + '80' }}
                 thumbColor={settings.soundEnabled ? Colors.primary : Colors.textMuted}
-              />
-            </View>
-            <View style={s.separator} />
-            <View style={s.row}>
-              <Text style={s.rowLabel}>Rung</Text>
-              <Switch
-                value={settings.vibrationEnabled}
-                onValueChange={() => { dispatch(toggleVibration()); }}
-                trackColor={{ false: Colors.bgCard, true: Colors.primary + '80' }}
-                thumbColor={settings.vibrationEnabled ? Colors.primary : Colors.textMuted}
               />
             </View>
           </View>
@@ -96,7 +93,7 @@ export const SettingsScreen: React.FC = () => {
           </View>
 
           {/* Reset */}
-          <TouchableOpacity style={s.resetBtn} onPress={() => dispatch(resetSettings())} activeOpacity={0.8}>
+          <TouchableOpacity style={s.resetBtn} onPress={() => { dispatch(resetSettings()); MusicService.setEnabled(true); }} activeOpacity={0.8}>
             <Text style={s.resetBtnText}> Khôi phục mặc định</Text>
           </TouchableOpacity>
         </ScrollView>

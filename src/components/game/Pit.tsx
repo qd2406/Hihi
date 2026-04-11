@@ -87,6 +87,13 @@ export const Pit: React.FC<PitProps> = ({
   };
 
   const stonesArr = Array.from({ length: Math.min(pit.stones, 20) });
+  // Ô Quan: viên gạch chỉ hiện khi quan chưa bị ăn (stones >= 10)
+  // Khi bị ăn (stones < 10), chỉ còn đá nhỏ rải lộn xộn
+  const quanHasBrick = isQuan && pit.stones >= 10;
+  const quanSmallStones = isQuan
+    ? (quanHasBrick ? pit.stones - 10 : pit.stones)  // Nếu còn gạch: đá thừa; nếu mất gạch: tất cả là đá nhỏ
+    : 0;
+  const quanStonesArr = Array.from({ length: Math.min(quanSmallStones, 30) });
 
   const glowColor = glowAnim.interpolate({
     inputRange: [0, 1],
@@ -121,13 +128,22 @@ export const Pit: React.FC<PitProps> = ({
             pointerEvents="none"
           />
 
-          {/* ── QUAN: 1 viên đá lớn đặc biệt ── */}
+          {/* ── QUAN: viên gạch (nếu chưa bị ăn) + đá nhỏ rải lộn xộn ── */}
           {isQuan ? (
-            <View style={[StyleSheet.absoluteFillObject, { alignItems: 'center', justifyContent: 'center' }]} pointerEvents="none">
-              {/* Viên đá Quan lớn */}
-              <View style={styles.quanStone}>
-                <View style={styles.quanStoneInner} />
-              </View>
+            <View style={StyleSheet.absoluteFillObject} pointerEvents="none">
+              {/* Viên gạch Quan – chỉ hiện khi chưa bị ăn (>= 10) */}
+              {quanHasBrick && (
+                <View style={styles.quanBrickContainer}>
+                  <View style={styles.quanBrick}>
+                    <View style={styles.quanBrickLine} />
+                    <View style={styles.quanBrickLine} />
+                  </View>
+                </View>
+              )}
+              {/* Đá nhỏ rải lộn xộn – giống ô dân */}
+              {quanStonesArr.map((_, i) => (
+                <Stone key={`q-${i}`} index={i} isAnimating={isAnimating} totalStones={quanSmallStones} />
+              ))}
             </View>
           ) : (
             /* DAN: đá nhỏ rải ngẫu nhiên */
@@ -207,18 +223,29 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.4, shadowRadius: 6, elevation: 6, overflow: 'hidden',
   },
 
-  // ── Viên đá Quan lớn ──────────────────────────────────────
-  quanStone: {
-    width: 38, height: 38, borderRadius: 19,
-    backgroundColor: '#2e7d32',
-    borderWidth: 3, borderColor: '#66bb6a',
-    alignItems: 'center', justifyContent: 'center',
-    shadowColor: '#1b5e20', shadowOffset: { width: 0, height: 3 },
-    shadowOpacity: 0.8, shadowRadius: 4, elevation: 8,
+  // ── Viên gạch Quan (tượng trưng 10 điểm) ──────────────────
+  quanBrickContainer: {
+    position: 'absolute',
+    top: 0,
+    bottom: 0,
+    left: 0,
+    right: 0,
+    alignItems: 'center',
+    justifyContent: 'center',
+    zIndex: 5,
   },
-  quanStoneInner: {
-    width: 16, height: 16, borderRadius: 8,
-    backgroundColor: 'rgba(255,255,255,0.25)',
+  quanBrick: {
+    width: 36, height: 20, borderRadius: 4,
+    backgroundColor: '#c0392b',
+    borderWidth: 1.5, borderColor: '#e74c3c',
+    alignItems: 'center', justifyContent: 'space-evenly',
+    flexDirection: 'row',
+    shadowColor: '#7b241c', shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.7, shadowRadius: 3, elevation: 6,
+  },
+  quanBrickLine: {
+    width: 1, height: 14,
+    backgroundColor: 'rgba(0,0,0,0.2)',
   },
 
   // ── Badge số đá ────────────────────────────────────────────
