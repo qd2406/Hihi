@@ -28,7 +28,7 @@ export const MusicService = {
       });
 
       const { sound } = await Audio.Sound.createAsync(BGM_SOURCE, {
-        isLooping: true,   // ← Tự lặp lại khi hết bài
+        isLooping: true,   
         volume: 0.2,
         shouldPlay: _musicEnabled,
       });
@@ -39,7 +39,7 @@ export const MusicService = {
     }
   },
 
-  /** Bật/tắt nhạc nền */
+
   async setEnabled(enabled: boolean) {
     _musicEnabled = enabled;
     if (!_bgmSound) return;

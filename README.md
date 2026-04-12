@@ -20,6 +20,10 @@ Set-ExecutionPolicy RemoteSigned -Scope CurrentUser
 ```bash
 npm install
 ```
+-Cài đặt phiên bản phù hợp với điện thoại (Check ở phần setting -> supported SDK : hiện số bao nhiêu thì là phiên bản của expo có thể thay vào 54 ở dòng lệnh dưới)
+```bash
+npm install expo@54.0.0
+```
 ### 2. Cài công cụ tunnel (với máy mới)
 ```bash
 npm install -g @expo/ngrok
