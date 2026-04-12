@@ -1,7 +1,3 @@
-// ============================================================
-// THEME – Typography
-// ============================================================
-
 export const Typography = {
   // Font sizes
   xs: 10,
@@ -12,7 +8,6 @@ export const Typography = {
   xxl: 26,
   title: 32,
 
-  // Font weights (as string for RN)
   regular: '400' as const,
   medium: '500' as const,
   semiBold: '600' as const,

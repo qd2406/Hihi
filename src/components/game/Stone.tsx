@@ -1,7 +1,7 @@
 import React, { useRef, useEffect, useMemo } from 'react';
 import { StyleSheet, Animated } from 'react-native';
 
-const STONE_COLOR = '#e8d5a3'; // Màu mặc định
+const STONE_COLOR = '#e8d5a3'; 
 
 const STONE_COLORS = [
   '#e8d5a3',
@@ -21,10 +21,7 @@ interface StoneProps {
 
 export const Stone: React.FC<StoneProps> = ({ index, isAnimating = false, totalStones = 0 }) => {
   const scaleAnim = useRef(new Animated.Value(isAnimating ? 0 : 1)).current;
-
-  // Vị trí random thực sự, chỉ tính 1 lần khi mount
   const { offsetX, offsetY } = useMemo(() => {
-    // Random trong khoảng [-35%, +35%] so với tâm
     const angle = Math.random() * Math.PI * 2;
     const radius = Math.random() * 0.35;
     return {

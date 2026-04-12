@@ -18,12 +18,12 @@ const STEPS = [
   {
     icon: '🖐️',
     title: 'Lượt đi',
-    body: 'Chọn một ô có quân của bạn và hướng rải (cùng chiều kim đồng hồ ↻ hoặc ngược chiều ↺). Quân sẽ được rải lần lượt sang các ô liền kề.',
+    body: 'Chọn một ô có quân của bạn và hướng rải (theo hướng trái ← hoặc phải →). Quân sẽ được rải lần lượt sang các ô liền kề.',
   },
   {
     icon: '🍽️',
     title: 'Ăn quân',
-    body: 'Nếu sau khi rải hết quân, ô tiếp theo trống và ô tiếp nữa có quân (không phải ô quan) → bạn ăn hết quân trong ô đó! Tiếp tục kiểm tra xa hơn nếu vẫn đủ điều kiện.',
+    body: 'Nếu sau khi rải hết quân, ô tiếp theo trống và ô tiếp nữa có quân → bạn ăn hết quân trong ô đó! Tiếp tục kiểm tra xa hơn nếu vẫn đủ điều kiện.',
   },
   {
     icon: '♟️',
@@ -49,7 +49,6 @@ export const TutorialScreen: React.FC = () => {
     <BlurredBackground>
       <SafeAreaView style={s.safe}>
         <ScrollView contentContainerStyle={s.scroll}>
-          {/* Header */}
           <View style={s.header}>
             <TouchableOpacity onPress={() => navigation.goBack()} style={s.backBtn}>
               <Text style={s.backText}>← Quay lại</Text>
@@ -59,7 +58,7 @@ export const TutorialScreen: React.FC = () => {
           </View>
 
           <Text style={s.intro}>
-            Ô Ăn Quan là trò chơi dân gian Việt Nam dành cho 2 người, đơn giản mà đầy chiến thuật.
+            Ô Ăn Quan là trò chơi dân gian Việt Nam dành cho 2 người, đơn giản và đầy chiến thuật.
           </Text>
 
           {STEPS.map((step, i) => (

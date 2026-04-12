@@ -1,11 +1,3 @@
-/**
- * OnlineController – Kết nối nước đi với Socket qua SocketService
- *
- * - Khi người chơi đi: gọi SocketService.sendMove()
- * - Khi nhận move từ đối thủ: gọi playTurn() để thực thi trên board
- * - Khi đối thủ rời: hiển thị thông báo
- */
-
 import { SocketService } from '../services/SocketService';
 import { store } from '../store/store';
 import {
@@ -22,9 +14,6 @@ import { ENV } from '../config/env';
 import type { Direction } from '../types';
 
 export const OnlineController = {
-  /**
-   * Kết nối tới server và đăng ký tất cả listeners
-   */
   async connect(): Promise<void> {
     store.dispatch(setConnectionStatus('connecting'));
 
@@ -74,9 +63,6 @@ export const OnlineController = {
     SocketService.getRooms();
   },
 
-  /**
-   * Gửi nước đi tới server (gọi sau khi playTurn local xong)
-   */
   sendMove(pitId: number, direction: Direction) {
     const state = store.getState();
     const socketId = state.user.socketId ?? '';

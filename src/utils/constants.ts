@@ -1,7 +1,3 @@
-// ============================================================
-// Constants – game board, stone counts, animation timings
-// ============================================================
-
 // Board layout
 export const TOTAL_PITS = 12;
 export const QUAN_1 = 0;   // Left Mandarin pit  (Player 1 side)

@@ -5,7 +5,7 @@ interface SettingsState {
   vibrationEnabled: boolean;
   animationSpeed: 'slow' | 'normal' | 'fast';
   language: 'vi' | 'en';
-  showHints: boolean;       // highlight valid pits on your turn
+  showHints: boolean;       
 }
 
 const initialState: SettingsState = {

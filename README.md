@@ -30,7 +30,7 @@ npm install -g @expo/ngrok
 ```
 
 ### 3. Chạy Expo (offline mode)
-
+(Máy tính và điện thoại phải cùng 1 mạng wifi)
 ```bash
 npx expo start -c 
 ```

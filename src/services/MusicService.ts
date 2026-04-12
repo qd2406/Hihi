@@ -1,10 +1,3 @@
-/**
- * MusicService – Nhạc nền cho game
- * 
- * Sử dụng expo-av Audio API.
- * Nhạc sẽ tự động lặp lại khi kết thúc.
- */
-
 import { Audio } from 'expo-av';
 
 const BGM_SOURCE = require('../../assets/sounds/bgm.mp3');
@@ -14,12 +7,8 @@ let _isPlaying = false;
 let _musicEnabled = true;
 
 export const MusicService = {
-  /**
-   * Khởi tạo và phát nhạc nền (loop vô hạn).
-   * Gọi 1 lần khi app khởi động.
-   */
   async startBGM() {
-    if (_bgmSound) return; // Đã khởi tạo rồi
+    if (_bgmSound) return; 
     try {
       await Audio.setAudioModeAsync({
         playsInSilentModeIOS: true,
@@ -56,7 +45,6 @@ export const MusicService = {
     }
   },
 
-  /** Điều chỉnh âm lượng (0.0 – 1.0) */
   async setVolume(volume: number) {
     if (!_bgmSound) return;
     try {
@@ -66,14 +54,12 @@ export const MusicService = {
     }
   },
 
-  /** Giải phóng tài nguyên khi không cần nữa */
   async cleanup() {
     if (_bgmSound) {
       try {
         await _bgmSound.stopAsync();
         await _bgmSound.unloadAsync();
       } catch (e) {
-        // ignore
       }
       _bgmSound = null;
       _isPlaying = false;

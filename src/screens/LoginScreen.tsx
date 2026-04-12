@@ -42,19 +42,16 @@ export const LoginScreen: React.FC = () => {
         style={s.bg}
         resizeMode="stretch"
       >
-        {/* ── Menu chính – giữa trái ── */}
         <Animated.View
           style={[
             s.menuArea,
             { opacity: fadeAnim, transform: [{ translateY: slideAnim }] },
           ]}
         >
-          {/* Bắt đầu */}
           <TouchableOpacity style={s.menuItem} onPress={handleStart} activeOpacity={0.7}>
             <Text style={s.menuText}>Bắt đầu</Text>
           </TouchableOpacity>
 
-          {/* Hướng dẫn */}
           <TouchableOpacity
             style={s.menuItem}
             onPress={() => navigation.navigate('Tutorial')}
@@ -63,7 +60,6 @@ export const LoginScreen: React.FC = () => {
             <Text style={s.menuText}>Hướng dẫn</Text>
           </TouchableOpacity>
 
-          {/* Cài đặt */}
           <TouchableOpacity
             style={s.menuItem}
             onPress={() => navigation.navigate('Settings')}
@@ -72,7 +68,6 @@ export const LoginScreen: React.FC = () => {
             <Text style={s.menuText}>Cài đặt</Text>
           </TouchableOpacity>
 
-          {/* Thoát */}
           <TouchableOpacity
             style={s.menuItem}
             activeOpacity={0.7}
@@ -109,7 +104,6 @@ const s = StyleSheet.create({
     height: '100%',
   },
 
-  /* ── Menu dọc giữa-trái ─────────── */
   menuArea: {
     position: 'absolute',
     left: 28,

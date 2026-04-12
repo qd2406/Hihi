@@ -33,7 +33,6 @@ export const SettingsScreen: React.FC = () => {
     <BlurredBackground>
       <SafeAreaView style={s.safe}>
         <ScrollView contentContainerStyle={s.scroll}>
-          {/* Header */}
           <View style={s.header}>
             <TouchableOpacity onPress={() => navigation.goBack()} style={s.backBtn}>
               <Text style={s.backText}>← Quay lại</Text>
@@ -42,7 +41,6 @@ export const SettingsScreen: React.FC = () => {
             <View style={{ width: 80 }} />
           </View>
 
-          {/* Sound */}
           <View style={s.card}>
             <Text style={s.cardTitle}>Âm thanh</Text>
             <View style={s.row}>
@@ -56,7 +54,6 @@ export const SettingsScreen: React.FC = () => {
             </View>
           </View>
 
-          {/* Animation speed */}
           <View style={s.card}>
             <Text style={s.cardTitle}>Tốc độ hoạt ảnh</Text>
             <View style={s.speedRow}>
@@ -75,7 +72,6 @@ export const SettingsScreen: React.FC = () => {
             </View>
           </View>
 
-          {/* Gameplay */}
           <View style={s.card}>
             <Text style={s.cardTitle}>Lối chơi</Text>
             <View style={s.row}>
@@ -92,7 +88,6 @@ export const SettingsScreen: React.FC = () => {
             </View>
           </View>
 
-          {/* Reset */}
           <TouchableOpacity style={s.resetBtn} onPress={() => { dispatch(resetSettings()); MusicService.setEnabled(true); }} activeOpacity={0.8}>
             <Text style={s.resetBtnText}> Khôi phục mặc định</Text>
           </TouchableOpacity>

@@ -56,7 +56,6 @@ export const ResultScreen: React.FC = () => {
             <Text style={[s.resultText, { color: winnerColor }]}>{winnerLabel}</Text>
           </View>
 
-          {/* Score cards */}
           <View style={s.scoreRow}>
             {(['PLAYER_1', 'PLAYER_2'] as const).map((p) => (
               <View key={p} style={[s.scoreCard, { borderColor: p === 'PLAYER_1' ? Colors.player1 : Colors.player2 }]}>
@@ -69,7 +68,6 @@ export const ResultScreen: React.FC = () => {
             ))}
           </View>
 
-          {/* Actions */}
           <View style={s.actions}>
             <TouchableOpacity style={s.primaryBtn} onPress={handlePlayAgain} activeOpacity={0.85}>
               <Text style={s.primaryBtnText}>🔄 Chơi lại</Text>

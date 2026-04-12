@@ -1,18 +1,14 @@
-// ============================================================
-// Game domain types
-// ============================================================
-
 export type Player = 'PLAYER_1' | 'PLAYER_2';
 export type PitType = 'DAN' | 'QUAN';
 export type GameMode = 'PvP' | 'PvE' | 'Online';
-export type Direction = 'CW' | 'CCW'; // Clockwise / Counter-Clockwise
+export type Direction = 'CW' | 'CCW'; 
 export type Difficulty = 'EASY' | 'MEDIUM' | 'HARD';
 
 export interface PitData {
   id: number;
   type: PitType;
   stones: number;
-  owner: Player; // which side (row) of the board the pit belongs to
+  owner: Player; 
 }
 
 export interface GameState {

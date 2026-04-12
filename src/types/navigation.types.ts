@@ -1,11 +1,7 @@
-// ============================================================
-// Navigation types
-// ============================================================
-
 export type RootStackParamList = {
   Login: undefined;
   ModeSelect: undefined;
-  Lobby: undefined;          // Online lobby
+  Lobby: undefined;          
   Game: undefined;
   Result: undefined;
   Settings: undefined;

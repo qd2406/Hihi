@@ -6,7 +6,7 @@ interface OnlineState {
   roomId: string | null;
   isHost: boolean;
   opponentName: string | null;
-  rooms: Room[];         // danh sách phòng từ server
+  rooms: Room[];        
   error: string | null;
 }
 

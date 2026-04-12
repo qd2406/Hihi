@@ -1,20 +1,4 @@
-/**
- * SocketService – Singleton WebSocket client (Socket.IO)
- *
- * Usage:
- *   SocketService.connect(url);
- *   SocketService.createRoom(playerName);
- *   SocketService.joinRoom(roomId, playerName);
- *   SocketService.sendMove({ pitId, direction });
- *   SocketService.disconnect();
- *
- * Listen to events via .on(...) callbacks set from OnlineController.
- */
-
 import type { OnlineMove, Room } from '../types';
-
-// ── Dynamic import of socket.io-client ────────────────────────────────────────
-// We use a lazy import so the app still loads offline without any crash.
 
 type SocketIO = {
   connected: boolean;
@@ -120,5 +104,4 @@ class SocketServiceClass {
   }
 }
 
-// Singleton export
 export const SocketService = new SocketServiceClass();

@@ -13,7 +13,6 @@ export const store = configureStore({
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({
-      // Allow non-serializable values only for Socket.io (not in state)
       serializableCheck: false,
     }),
 });

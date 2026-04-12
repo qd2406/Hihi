@@ -1,7 +1,3 @@
-// ============================================================
-// Online / Multiplayer types
-// ============================================================
-
 export type RoomStatus = 'waiting' | 'playing' | 'finished';
 
 export type ConnectionStatus =
@@ -14,16 +10,15 @@ export interface Room {
   id: string;
   hostName: string;
   status: RoomStatus;
-  playerCount: number; // 1 or 2
+  playerCount: number; 
 }
 
 export interface OnlineMove {
   pitId: number;
   direction: 'CW' | 'CCW';
-  playerId: string; // socket id
+  playerId: string; 
 }
 
-// Socket events emitted by client
 export type ClientEvent =
   | 'createRoom'
   | 'joinRoom'
@@ -31,7 +26,6 @@ export type ClientEvent =
   | 'sendMove'
   | 'getRooms';
 
-// Socket events received from server
 export type ServerEvent =
   | 'roomCreated'
   | 'roomJoined'

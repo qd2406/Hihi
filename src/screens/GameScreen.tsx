@@ -33,15 +33,12 @@ export const GameScreen: React.FC = () => {
   const msgAnim = useRef(new Animated.Value(0)).current;
   const prevMsg = useRef(gameState.message);
 
-  // ── Quản lý ô đang được chọn (chỉ 1 ô sáng cùng lúc) ──
   const [selectedPitId, setSelectedPitId] = useState<number | null>(null);
 
-  // Reset selection khi đổi lượt hoặc bắt đầu animation
   useEffect(() => {
     setSelectedPitId(null);
   }, [gameState.currentPlayer, gameState.isAnimating]);
 
-  // Navigate to result when game ends
   useEffect(() => {
     if (gameState.winner) {
       const t = setTimeout(() => navigation.navigate('Result'), 1200);
@@ -49,7 +46,6 @@ export const GameScreen: React.FC = () => {
     }
   }, [gameState.winner]);
 
-  // AI turn
   useEffect(() => {
     if (
       gameState.gameMode === 'PvE' &&
@@ -61,7 +57,6 @@ export const GameScreen: React.FC = () => {
     }
   }, [gameState.currentPlayer, gameState.gameMode, gameState.winner, gameState.isAnimating]);
 
-  // Message bounce animation
   useEffect(() => {
     if (gameState.message !== prevMsg.current) {
       prevMsg.current = gameState.message;
@@ -71,12 +66,11 @@ export const GameScreen: React.FC = () => {
   }, [gameState.message]);
 
   const handlePitClick = (pitId: number, direction: Direction) => {
-    setSelectedPitId(null); // Bỏ chọn sau khi rải
+    setSelectedPitId(null); 
     if (gameState.isAnimating || gameState.winner) return;
     const pit = gameState.board[pitId];
     if (pit.owner !== gameState.currentPlayer) return;
 
-    // Online mode: only allow if it's MY turn
     if (gameState.gameMode === 'Online') {
       const amHost = onlineState.isHost;
       const isMyTurn = amHost
@@ -121,7 +115,6 @@ export const GameScreen: React.FC = () => {
 
   const msgScale = msgAnim.interpolate({ inputRange: [0, 1], outputRange: [0.85, 1] });
 
-  // ── Landscape layout ─────────────────────────────────────────────────────────
   if (isLandscape) {
     const isP1Turn = gameState.currentPlayer === 'PLAYER_1';
     return (
@@ -129,7 +122,6 @@ export const GameScreen: React.FC = () => {
         <SafeAreaView style={s.safe}>
           <View style={s.landscapeRoot}>
 
-            {/* ── Header: Thoát | Thông báo | Lượt ── */}
             <View style={s.lsHeader}>
               <TouchableOpacity onPress={handleExitGame} style={s.backBtn}>
                 <Text style={s.backText}>✕ Thoát</Text>
@@ -145,7 +137,6 @@ export const GameScreen: React.FC = () => {
               </View>
             </View>
 
-            {/* ── P2 score — xoay 180° chỉ trong PvP ── */}
             <View style={[
               s.lsScoreBar,
               !isP1Turn && s.lsScoreBarActive,
@@ -156,7 +147,6 @@ export const GameScreen: React.FC = () => {
               <Text style={s.lsScoreName} numberOfLines={1}>{player2Name}</Text>
             </View>
 
-            {/* ── Bàn cờ ── */}
             <View style={[s.boardContainer, s.boardLandscape, gameState.isAnimating && s.boardAnimating]}>
               <Board
                 board={gameState.board}
@@ -170,7 +160,6 @@ export const GameScreen: React.FC = () => {
               />
             </View>
 
-            {/* ── P1 score — bình thường ── */}
             <View style={[s.lsScoreBar, isP1Turn && s.lsScoreBarActive]}>
               <Text style={s.lsScoreName} numberOfLines={1}>{userState.player1Name}</Text>
               <Text style={s.lsScoreLabel}>điểm</Text>
@@ -183,12 +172,10 @@ export const GameScreen: React.FC = () => {
     );
   }
 
-  // ── Portrait layout ───────────────────────────────────────────────────────────
   return (
     <BlurredBackground>
       <SafeAreaView style={s.safe}>
         <View style={s.portraitRoot}>
-          {/* Header */}
           <View style={s.header}>
             <TouchableOpacity onPress={handleExitGame} style={s.backBtn}>
               <Text style={s.backText}>✕ Thoát ván</Text>
@@ -197,7 +184,6 @@ export const GameScreen: React.FC = () => {
             <View style={{ width: 80 }} />
           </View>
 
-          {/* Score */}
           <Score
             player1Name={userState.player1Name}
             player2Name={player2Name}
@@ -206,12 +192,10 @@ export const GameScreen: React.FC = () => {
             currentPlayer={gameState.currentPlayer}
           />
 
-          {/* Message */}
           <Animated.View style={[s.msgContainer, { transform: [{ scale: msgScale }] }]}>
             <Text style={s.msgText}>{gameState.message}</Text>
           </Animated.View>
 
-          {/* Board */}
           <View style={[s.boardContainer, gameState.isAnimating && s.boardAnimating]}>
             <Board
               board={gameState.board}
@@ -225,7 +209,6 @@ export const GameScreen: React.FC = () => {
             />
           </View>
 
-          {/* Turn indicator */}
           <View style={s.footer}>
             <View style={s.turnBadge}>
               <View style={[s.turnDot, gameState.currentPlayer === 'PLAYER_1' ? s.dotP1 : s.dotP2]} />
@@ -244,10 +227,8 @@ export const GameScreen: React.FC = () => {
 const s = StyleSheet.create({
   gradient: { flex: 1 },
   safe: { flex: 1 },
-  // Portrait
   portraitRoot: { flex: 1, paddingHorizontal: Spacing.md, paddingTop: Spacing.sm, paddingBottom: Spacing.lg, gap: Spacing.md, justifyContent: 'space-between', overflow: 'visible' },
   header: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', paddingHorizontal: Spacing.xs },
-  // Landscape – vertical stack
   landscapeRoot: { flex: 1, flexDirection: 'column', paddingHorizontal: Spacing.sm, paddingVertical: Spacing.xs, gap: Spacing.xs },
   lsHeader: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', gap: Spacing.sm },
   msgLandscape: { flex: 1, paddingVertical: 4 },
@@ -263,7 +244,6 @@ const s = StyleSheet.create({
   lsVs: { color: Colors.primary, fontSize: Typography.md, fontWeight: Typography.black },
   turnBadgeSm: { paddingHorizontal: Spacing.sm, paddingVertical: 4 },
   turnTextSm: { color: Colors.textPrimary, fontSize: Typography.sm, fontWeight: Typography.bold },
-  // Common
   backBtn: { paddingVertical: Spacing.sm, paddingHorizontal: Spacing.md, borderRadius: Radius.md, backgroundColor: Colors.danger + '25', borderWidth: 1, borderColor: Colors.danger + '50' },
   backText: { color: Colors.danger, fontSize: Typography.sm, fontWeight: Typography.semiBold },
   gameTitle: { color: Colors.primary, fontSize: Typography.lg, fontWeight: Typography.black, letterSpacing: 1, textAlign: 'center' },

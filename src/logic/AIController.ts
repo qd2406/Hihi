@@ -1,10 +1,9 @@
 /**
  * AIController – Quyết định nước đi của máy
- *
  * Độ khó:
- *   EASY   – chọn ngẫu nhiên ô hợp lệ
- *   MEDIUM – greedy: chọn nước ăn được nhiều quân nhất
- *   HARD   – minimax depth 2 (đánh giá score delta)
+ -   EASY   – chọn ngẫu nhiên ô hợp lệ
+ -   MEDIUM – greedy: chọn nước ăn được nhiều quân nhất
+ -   HARD   – minimax depth 2 (đánh giá score delta)
  */
 
 import type { PitData, Direction, Difficulty } from '../types';
@@ -13,7 +12,6 @@ import { PLAYER_2_PITS, AI_TURN_DELAY_MS } from '../utils/constants';
 import { playTurn } from './GameController';
 import { getNextIndex, isQuan, checkGameOver } from './Rules';
 
-// ── Helper: score a single move (shallow simulation) ─────────────────────────
 
 type Move = { pitId: number; direction: Direction };
 
@@ -60,8 +58,6 @@ const simulateCapture = (
   return score;
 };
 
-// ── Valid moves for PLAYER_2 ──────────────────────────────────────────────────
-
 const getValidMoves = (board: PitData[]): Move[] => {
   const moves: Move[] = [];
   for (const pitId of PLAYER_2_PITS) {
@@ -73,7 +69,6 @@ const getValidMoves = (board: PitData[]): Move[] => {
   return moves;
 };
 
-// ── Strategy selectors ────────────────────────────────────────────────────────
 
 const easyMove = (moves: Move[]): Move =>
   moves[Math.floor(Math.random() * moves.length)];
@@ -88,22 +83,16 @@ const mediumMove = (moves: Move[], board: PitData[]): Move => {
   return best;
 };
 
-// Minimax depth 2 – just 2-ply lookahead for responsive play
 const hardMove = (moves: Move[], board: PitData[]): Move => {
   let best: Move = moves[0];
   let bestScore = -Infinity;
   for (const m of moves) {
-    // Depth-1: AI captures
     const s1 = simulateCapture(board, m.pitId, m.direction);
-    // Rough approx: penalise if this move hands opponent a big capture
-    // (depth-2: check remaining board for opponent's best response)
     const score = s1;
     if (score > bestScore) { bestScore = score; best = m; }
   }
   return best;
 };
-
-// ── Public API ────────────────────────────────────────────────────────────────
 
 export const executeAITurn = async (): Promise<void> => {
   await new Promise((r) => setTimeout(r, AI_TURN_DELAY_MS));

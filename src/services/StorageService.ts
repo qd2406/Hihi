@@ -1,9 +1,3 @@
-/**
- * StorageService – AsyncStorage wrapper
- * 
- * Gracefully handles cases where AsyncStorage is not available (e.g. web).
- */
-
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const KEYS = {
@@ -32,7 +26,6 @@ export interface StoredPlayerNames {
   player2Name: string;
 }
 
-// ── Generic helpers ───────────────────────────────────────────────────────────
 
 const save = async <T>(key: string, value: T): Promise<void> => {
   try {
@@ -52,8 +45,6 @@ const load = async <T>(key: string, fallback: T): Promise<T> => {
     return fallback;
   }
 };
-
-// ── Public API ────────────────────────────────────────────────────────────────
 
 export const StorageService = {
   saveSettings: (settings: StoredSettings) =>

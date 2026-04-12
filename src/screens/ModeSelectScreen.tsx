@@ -18,8 +18,8 @@ type Nav = NativeStackNavigationProp<RootStackParamList, 'ModeSelect'>;
 
 const MODES = [
   { key: 'PvP', icon: '👥', label: 'Hai người', desc: 'Cùng một thiết bị' },
-  { key: 'PvE', icon: '🤖', label: 'Một mình', desc: 'Đấu với AI' },
-  { key: 'Online', icon: '🌐', label: 'Online', desc: 'Chơi với bạn bè' },
+  { key: 'PvE', icon: '🤖', label: 'Một mình', desc: 'Đấu với máy' },
+  { key: 'Online', icon: '🌐', label: 'Online', desc: 'Chơi với bạn bè(sắp ra mắt)' },
 ] as const;
 
 const DIFFS: { key: Difficulty; label: string; color: string }[] = [
@@ -47,7 +47,6 @@ export const ModeSelectScreen: React.FC = () => {
     <BlurredBackground>
       <SafeAreaView style={s.safe}>
         <ScrollView contentContainerStyle={s.scroll}>
-          {/* Header */}
           <View style={s.header}>
             <TouchableOpacity onPress={() => navigation.goBack()} style={s.backBtn}>
               <Text style={s.backText}>← Quay lại</Text>
@@ -58,7 +57,6 @@ export const ModeSelectScreen: React.FC = () => {
             </TouchableOpacity>
           </View>
 
-          {/* Mode cards */}
           <View style={s.section}>
             {MODES.map((m) => (
               <TouchableOpacity
@@ -77,7 +75,6 @@ export const ModeSelectScreen: React.FC = () => {
             ))}
           </View>
 
-          {/* Difficulty (PvE only) */}
           {selectedMode === 'PvE' && (
             <View style={s.section}>
               <Text style={s.sectionTitle}>Độ khó AI</Text>
@@ -96,14 +93,12 @@ export const ModeSelectScreen: React.FC = () => {
             </View>
           )}
 
-          {/* Start */}
           <TouchableOpacity style={s.startBtn} onPress={handleStart} activeOpacity={0.85}>
             <Text style={s.startBtnText}>
               {selectedMode === 'Online' ? 'Vào sảnh →' : 'Bắt đầu →'}
             </Text>
           </TouchableOpacity>
 
-          {/* Exit Game */}
           <TouchableOpacity
             style={s.exitBtn}
             onPress={() => {

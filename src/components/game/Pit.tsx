@@ -26,13 +26,9 @@ interface PitProps {
   danPitSize?: number;
   quanPitWidth?: number;
   quanPitHeight?: number;
-  /** Người chơi ngồi phía đối diện – đảo mũi tên */
   flipped?: boolean;
-  /** Xoay toàn bộ ô 180° để người đối diện đọc được (chỉ PvP) */
   rotateForOpponent?: boolean;
-  /** Ô này đang được chọn (hiện mũi tên) */
   isSelected?: boolean;
-  /** Callback khi chọn/bỏ chọn ô */
   onSelect?: (pitId: number | null) => void;
 }
 
@@ -76,22 +72,19 @@ export const Pit: React.FC<PitProps> = ({
       Animated.spring(scaleAnim, { toValue: 0.9, useNativeDriver: true, speed: 50 }),
       Animated.spring(scaleAnim, { toValue: 1,   useNativeDriver: true, speed: 20 }),
     ]).start();
-    // Toggle selection: deselect if already selected, otherwise select this pit
     onSelect?.(isSelected ? null : pit.id);
   };
 
   const handleDirection = (dir: Direction) => {
     Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
-    onSelect?.(null); // deselect after choosing direction
+    onSelect?.(null); 
     onClick(dir);
   };
 
   const stonesArr = Array.from({ length: Math.min(pit.stones, 20) });
-  // Ô Quan: viên gạch chỉ hiện khi quan chưa bị ăn (stones >= 10)
-  // Khi bị ăn (stones < 10), chỉ còn đá nhỏ rải lộn xộn
   const quanHasBrick = isQuan && pit.stones >= 10;
   const quanSmallStones = isQuan
-    ? (quanHasBrick ? pit.stones - 10 : pit.stones)  // Nếu còn gạch: đá thừa; nếu mất gạch: tất cả là đá nhỏ
+    ? (quanHasBrick ? pit.stones - 10 : pit.stones)  
     : 0;
   const quanStonesArr = Array.from({ length: Math.min(quanSmallStones, 30) });
 
@@ -122,16 +115,13 @@ export const Pit: React.FC<PitProps> = ({
             },
           ]}
         >
-          {/* Glow overlay */}
           <Animated.View
             style={[StyleSheet.absoluteFillObject, { backgroundColor: glowColor, borderRadius: borderR }]}
             pointerEvents="none"
           />
 
-          {/* ── QUAN: viên gạch (nếu chưa bị ăn) + đá nhỏ rải lộn xộn ── */}
           {isQuan ? (
             <View style={StyleSheet.absoluteFillObject} pointerEvents="none">
-              {/* Viên gạch Quan – chỉ hiện khi chưa bị ăn (>= 10) */}
               {quanHasBrick && (
                 <View style={styles.quanBrickContainer}>
                   <View style={styles.quanBrick}>
@@ -140,13 +130,11 @@ export const Pit: React.FC<PitProps> = ({
                   </View>
                 </View>
               )}
-              {/* Đá nhỏ rải lộn xộn – giống ô dân */}
               {quanStonesArr.map((_, i) => (
                 <Stone key={`q-${i}`} index={i} isAnimating={isAnimating} totalStones={quanSmallStones} />
               ))}
             </View>
           ) : (
-            /* DAN: đá nhỏ rải ngẫu nhiên */
             <View style={StyleSheet.absoluteFillObject} pointerEvents="none">
               {stonesArr.map((_, i) => (
                 <Stone key={i} index={i} isAnimating={isAnimating} totalStones={pit.stones} />
@@ -154,7 +142,6 @@ export const Pit: React.FC<PitProps> = ({
             </View>
           )}
 
-          {/* Badge số đá */}
           <View
             style={[styles.badge, flipped && styles.badgeFlipped]}
             pointerEvents="none"
@@ -203,7 +190,6 @@ export const Pit: React.FC<PitProps> = ({
     </View>
   );
 
-  // Nếu rotateForOpponent = true, xoay toàn bộ ô 180° để P2 nhìn đúng chiều
   if (rotateForOpponent) {
     return (
       <View style={{ transform: [{ rotate: '180deg' }] }}>
@@ -223,7 +209,7 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.4, shadowRadius: 6, elevation: 6, overflow: 'hidden',
   },
 
-  // ── Viên gạch Quan (tượng trưng 10 điểm) ──────────────────
+
   quanBrickContainer: {
     position: 'absolute',
     top: 0,
@@ -248,7 +234,6 @@ const styles = StyleSheet.create({
     backgroundColor: 'rgba(0,0,0,0.2)',
   },
 
-  // ── Badge số đá ────────────────────────────────────────────
   badge: {
     position: 'absolute', bottom: 4, right: 4,
     backgroundColor: 'rgba(0,0,0,0.6)',
@@ -256,7 +241,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 3, alignItems: 'center', justifyContent: 'center',
     zIndex: 10,
   },
-  /** Khi flipped: góc trên-trái thay vì dưới-phải */
+
   badgeFlipped: {
     bottom: undefined, right: undefined,
     top: 4, left: 4,
@@ -264,14 +249,12 @@ const styles = StyleSheet.create({
   badgeText:     { color: '#FFD700', fontSize: 10, fontWeight: '800' },
   quanBadgeText: { fontSize: 12, color: '#a8e6b4' },
 
-  // ── Nhãn QUAN ──────────────────────────────────────────────
   quanLabel: {
     position: 'absolute', top: 6,
     color: 'rgba(168,230,180,0.85)',
     fontSize: 10, fontWeight: '700', letterSpacing: 1,
   },
 
-  // ── Mũi tên ────────────────────────────────────────────────
   arrowsContainer: { flexDirection: 'row', marginTop: 6, gap: 6 },
   arrowBtn: { width: 38, height: 32, borderRadius: 8, alignItems: 'center', justifyContent: 'center', elevation: 8 },
   arrowCCW: { backgroundColor: '#1565c0', borderWidth: 1, borderColor: '#0d47a1' },

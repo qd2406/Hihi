@@ -21,10 +21,6 @@ export const canPlay = (board: PitData[], player: Player): boolean => {
   return false;
 };
 
-/** 
- * Borrow stones from score when a player has no stones on board.
- * Place 1 stone on each of their 5 pits, deducted from score.
- */
 export const borrowStones = (
   board: PitData[],
   player: Player,
@@ -34,7 +30,6 @@ export const borrowStones = (
   const newScores = { ...scores };
   const start = player === 'PLAYER_1' ? 1 : 7;
 
-  // Borrow up to 5 stones from score
   const canBorrow = Math.min(5, newScores[player]);
   newScores[player] -= canBorrow;
   for (let i = start; i < start + canBorrow; i++) {

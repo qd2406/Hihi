@@ -8,7 +8,6 @@ import {
   INITIAL_QUAN_STONES,
 } from '../utils/constants';
 
-// ── Helper ────────────────────────────────────────────────────────────────────
 
 const generateInitialBoard = (): PitData[] => {
   const board: PitData[] = [];
@@ -25,7 +24,6 @@ const generateInitialBoard = (): PitData[] => {
         id: i,
         type: 'DAN',
         stones: INITIAL_DAN_STONES,
-        // Pits 1‑5: Player 1 (bottom row)  |  Pits 7‑11: Player 2 (top row)
         owner: i > QUAN_1 && i < QUAN_2 ? 'PLAYER_1' : 'PLAYER_2',
       });
     }
@@ -33,7 +31,6 @@ const generateInitialBoard = (): PitData[] => {
   return board;
 };
 
-// ── Initial state ─────────────────────────────────────────────────────────────
 
 const initialState: GameState = {
   board: generateInitialBoard(),
@@ -47,8 +44,6 @@ const initialState: GameState = {
   message: 'Bắt đầu trò chơi!',
   animatingPit: null,
 };
-
-// ── Slice ─────────────────────────────────────────────────────────────────────
 
 export const gameSlice = createSlice({
   name: 'game',

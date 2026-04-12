@@ -1,10 +1,3 @@
-/**
- * SoundService – Placeholder for game audio
- * 
- * Uses expo-av Audio API.
- * Replace the require() paths with actual audio files in assets/sounds/.
- */
-
 // import { Audio } from 'expo-av';
 
 // const SOUNDS = {

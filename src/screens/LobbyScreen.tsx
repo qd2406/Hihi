@@ -23,14 +23,11 @@ export const LobbyScreen: React.FC = () => {
   const userName = useSelector((s: RootState) => s.user.player1Name);
   const [joinCode, setJoinCode] = useState('');
   const [tab, setTab] = useState<'create' | 'join'>('create');
-
-  // Connect when screen mounts, disconnect when leaving
   useEffect(() => {
     OnlineController.connect();
     return () => { OnlineController.disconnect(); };
   }, []);
 
-  // Navigate to game when room is full
   useEffect(() => {
     if (onlineState.roomId && onlineState.opponentName) {
       navigation.navigate('Game');
@@ -52,7 +49,6 @@ export const LobbyScreen: React.FC = () => {
 
   const isConnecting = onlineState.connectionStatus === 'connecting';
   const isConnected  = onlineState.connectionStatus === 'connected';
-  // True if using default localhost URL (no real server configured)
   const isLocalDev = ENV.SOCKET_URL.includes('localhost') || ENV.SOCKET_URL.includes('127.0.0');
 
   const renderRoom = ({ item }: { item: Room }) => (
@@ -73,7 +69,6 @@ export const LobbyScreen: React.FC = () => {
   return (
     <BlurredBackground>
       <SafeAreaView style={s.safe}>
-        {/* Header */}
         <View style={s.header}>
           <TouchableOpacity onPress={() => navigation.goBack()} style={s.backBtn}>
             <Text style={s.backText}>← Quay lại</Text>
@@ -82,7 +77,6 @@ export const LobbyScreen: React.FC = () => {
           <View style={[s.statusDot, { backgroundColor: isConnected ? Colors.online : isConnecting ? Colors.waiting : Colors.offline }]} />
         </View>
 
-        {/* Server not configured warning */}
         {isLocalDev && (
           <View style={s.serverWarning}>
             <Text style={s.serverWarningTitle}>⚠️ Chưa có server WebSocket</Text>
@@ -93,14 +87,12 @@ export const LobbyScreen: React.FC = () => {
           </View>
         )}
 
-        {/* Error */}
         {onlineState.error && (
           <View style={s.errorBanner}>
             <Text style={s.errorText}>⚠️ {onlineState.error}</Text>
           </View>
         )}
 
-        {/* Connecting */}
         {isConnecting && (
           <View style={s.centerBox}>
             <ActivityIndicator color={Colors.primary} size="large" />
@@ -110,7 +102,6 @@ export const LobbyScreen: React.FC = () => {
 
         {isConnected && (
           <>
-            {/* Tabs */}
             <View style={s.tabs}>
               {(['create', 'join'] as const).map((t) => (
                 <TouchableOpacity key={t} style={[s.tab, tab === t && s.tabActive]} onPress={() => setTab(t)}>
@@ -150,7 +141,6 @@ export const LobbyScreen: React.FC = () => {
                   <Text style={s.primaryBtnText}>Vào phòng →</Text>
                 </TouchableOpacity>
 
-                {/* Room list */}
                 <Text style={s.sectionLabel}>Phòng đang chờ</Text>
                 <FlatList
                   data={onlineState.rooms}
